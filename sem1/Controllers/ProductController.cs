@@ -1,5 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using sem1.Abstraction;
+using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
+using System.Text.RegularExpressions;
 using sem1.Models;
+using System.Formats.Asn1;
+using System.Globalization;
 
 namespace sem1.Controllers
 {
@@ -7,6 +13,13 @@ namespace sem1.Controllers
     [Route("controller")]
     public class ProductController : ControllerBase
     {
+        private readonly IProductRepository _productRepository;
+
+        public ProductController(IProductRepository productService)
+        {
+            _productRepository = productService;
+        }
+
 
         [HttpGet("getProduct")]
         public IActionResult GetProducts()
@@ -102,6 +115,45 @@ namespace sem1.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
+        }
+
+        [HttpGet("export_products_csv")]
+        public IActionResult ExportProductsCsv()
+        {
+            var products = _productRepository.GetProducts();
+
+            using (var memoryStream = new MemoryStream())
+            using (var writer = new StreamWriter(memoryStream))
+            using (var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture)))
+            {
+                csv.WriteRecords(products);
+                writer.Flush();
+                memoryStream.Position = 0;
+
+                return File(memoryStream, "text/csv", "products.csv");
+            }
+        }
+
+
+        [HttpGet("cache_statistics_csv")]
+        public IActionResult GetCacheStatisticsCsv()
+        {
+            var cacheStatistics = _productRepository.GetCacheStatistics();
+
+            var memoryStream = new MemoryStream();
+            using (var writer = new StreamWriter(memoryStream))
+            using (var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture)))
+            {
+                csv.WriteRecord(cacheStatistics);
+                writer.Flush();
+                memoryStream.Position = 0;
+
+                return File(memoryStream, "text/csv", "cache_statistics.csv");
+            }
+
+
+
+
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace sem1.Repo
+﻿namespace sem1.Dto
 {
-    public class GroupDTO
+    public class ProductDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
     }
 }
