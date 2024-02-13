@@ -1,4 +1,3 @@
-
 using sem1.Migrations;
 using sem1.Models;
 using sem1.Repo;

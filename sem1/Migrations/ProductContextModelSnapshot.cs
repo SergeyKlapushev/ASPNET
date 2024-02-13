@@ -9,7 +9,7 @@ using sem1.Models;
 
 namespace sem1.Migrations
 {
-    [DbContext(typeof(ProductContext))]
+    [DbContext(typeof(ProductStorageDbContext))]
     partial class ProductContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

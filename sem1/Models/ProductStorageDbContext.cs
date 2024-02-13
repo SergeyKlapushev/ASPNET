@@ -3,7 +3,7 @@
 
 namespace sem1.Models
 {
-    public class ProductContext : DbContext
+    public class ProductStorageDbContext : DbContext
     {
         public DbSet<Storage> ProductStorages { get; set; }
         public DbSet<Product> Products { get; set; }

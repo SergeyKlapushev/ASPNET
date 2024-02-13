@@ -26,7 +26,7 @@ namespace sem1.Controllers
         {
             try
             {
-                using (var context = new ProductContext())
+                using (var context = new ProductStorageDbContext())
                 {
                     var product = context.Products.Select(x => new Product()
                     {
@@ -47,7 +47,7 @@ namespace sem1.Controllers
         {
             try
             {
-                using (var context = new ProductContext())
+                using (var context = new ProductStorageDbContext())
                 {
                     if (context.Products.Any(x => x.Name.ToLower().Equals(name)))
                     {
@@ -77,14 +77,15 @@ namespace sem1.Controllers
         {
             try
             {
-                using (var context = new ProductContext())
+                using (var context = new ProductStorageDbContext())
                 {
-                    context.Products.Add(new Product()
+                    var newProduct = (new Product()
                     {
                         Name = name,
                         Description = description,
                         CategoryId = categoryId
                     });
+                    context.Products.Add(newProduct);
                     context.SaveChanges();
                     return Ok();
                 }
@@ -100,7 +101,7 @@ namespace sem1.Controllers
         {
             try
             {
-                using (var context = new ProductContext())
+                using (var context = new ProductStorageDbContext())
                 {
                     if(context.Products.Any(p => p.Id.Equals(productId)))
                     {
